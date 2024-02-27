@@ -39,7 +39,7 @@ public class CustomerController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResultData<CustomerResponse> get(@PathVariable("id") Long id) {
-        return ResultHelper.success(this.modelMapper.forResponse().map(this.customerService.get((long) id), CustomerResponse.class));
+        return ResultHelper.success(this.modelMapper.forResponse().map(this.customerService.get(id), CustomerResponse.class));
     }
 
     @GetMapping()
