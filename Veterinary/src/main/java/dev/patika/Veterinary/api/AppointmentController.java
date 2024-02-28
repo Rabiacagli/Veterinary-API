@@ -1,7 +1,9 @@
 package dev.patika.Veterinary.api;
 
 
+import dev.patika.Veterinary.business.abstracts.IAnimalService;
 import dev.patika.Veterinary.business.abstracts.IAppointmentService;
+import dev.patika.Veterinary.business.abstracts.IDoctorService;
 import dev.patika.Veterinary.core.config.modelMapper.IModelMapperService;
 import dev.patika.Veterinary.core.result.Result;
 import dev.patika.Veterinary.core.result.ResultData;
@@ -10,7 +12,9 @@ import dev.patika.Veterinary.dto.request.appointment.AppointmentSaveRequest;
 import dev.patika.Veterinary.dto.request.appointment.AppointmentUpdateRequest;
 import dev.patika.Veterinary.dto.response.CursorResponse;
 import dev.patika.Veterinary.dto.response.appointment.AppointmentResponse;
+import dev.patika.Veterinary.entities.Animal;
 import dev.patika.Veterinary.entities.Appointment;
+import dev.patika.Veterinary.entities.Doctor;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,17 +26,28 @@ import org.springframework.web.bind.annotation.*;
 public class AppointmentController {
     private final IAppointmentService appointmentService;
     private final IModelMapperService modelMapper;
+    private final IAnimalService animalService;
+    private final IDoctorService doctorService;
 
     @Autowired
-    public AppointmentController(IAppointmentService appointmentService, IModelMapperService modelMapper) {
+    public AppointmentController(IAppointmentService appointmentService, IModelMapperService modelMapper, IAnimalService animalService, IDoctorService doctorService) {
         this.appointmentService = appointmentService;
         this.modelMapper = modelMapper;
+        this.animalService = animalService;
+        this.doctorService = doctorService;
     }
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public ResultData<AppointmentResponse> save(@Valid @RequestBody AppointmentSaveRequest appointmentSaveRequest) {
         Appointment saveAppointment = this.modelMapper.forRequest().map(appointmentSaveRequest, Appointment.class);
+        // randevuya hayvan eklendi
+        Animal animal = animalService.get(appointmentSaveRequest.getAnimalId());
+        saveAppointment.setAnimal(animal);
+
+        // randevuya doktor eklendı
+        Doctor doctor = doctorService.get(appointmentSaveRequest.getDoctorId());
+        saveAppointment.setDoctor(doctor);
         this.appointmentService.save(saveAppointment);
         return ResultHelper.created(this.modelMapper.forResponse().map(saveAppointment, AppointmentResponse.class));
     }

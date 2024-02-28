@@ -13,4 +13,6 @@ public class AppointmentUpdateRequest {
     @NotNull(message = "ID no boş veya null olamaz.")
     private Long id;
     private LocalDateTime appointmentDate;
+    private Long animalId; // hayvan id'sine göre
+    private Long doctorId; // doktor id yle guncelle
 }

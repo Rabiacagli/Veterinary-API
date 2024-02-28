@@ -1,5 +1,6 @@
 package dev.patika.Veterinary.api;
 
+import dev.patika.Veterinary.business.abstracts.IAnimalService;
 import dev.patika.Veterinary.business.abstracts.IVaccineService;
 import dev.patika.Veterinary.core.config.modelMapper.IModelMapperService;
 import dev.patika.Veterinary.core.result.Result;
@@ -9,6 +10,7 @@ import dev.patika.Veterinary.dto.request.vaccine.VaccineSaveRequest;
 import dev.patika.Veterinary.dto.request.vaccine.VaccineUpdateRequest;
 import dev.patika.Veterinary.dto.response.CursorResponse;
 import dev.patika.Veterinary.dto.response.vaccine.VaccineResponse;
+import dev.patika.Veterinary.entities.Animal;
 import dev.patika.Veterinary.entities.Vaccine;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,17 +23,22 @@ import org.springframework.web.bind.annotation.*;
 public class VaccineController {
     private final IVaccineService vaccineService;
     private final IModelMapperService modelMapper;
+    private final IAnimalService animalService;
 
     @Autowired
-    public VaccineController(IVaccineService vaccineService, IModelMapperService modelMapper) {
+    public VaccineController(IVaccineService vaccineService, IModelMapperService modelMapper, IAnimalService animalService) {
         this.vaccineService = vaccineService;
         this.modelMapper = modelMapper;
+        this.animalService = animalService;
     }
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public ResultData<VaccineResponse> save(@Valid @RequestBody VaccineSaveRequest vaccineSaveRequest) {
         Vaccine saveVaccine = this.modelMapper.forRequest().map(vaccineSaveRequest, Vaccine.class);
+        Animal animal = animalService.get(vaccineSaveRequest.getAnimalId());
+        saveVaccine.setAnimal(animal);
+        saveVaccine.setId(null);
         this.vaccineService.save(saveVaccine);
         return ResultHelper.created(this.modelMapper.forResponse().map(saveVaccine, VaccineResponse.class));
     }

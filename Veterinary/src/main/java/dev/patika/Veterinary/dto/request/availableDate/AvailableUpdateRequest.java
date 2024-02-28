@@ -14,4 +14,5 @@ public class AvailableUpdateRequest {
     @NotNull(message = "ID no boş veya null olamaz.")
     private Long id;
     private LocalDate availableDate;
+    private Long doctorId;// doktor id yle update yap
 }

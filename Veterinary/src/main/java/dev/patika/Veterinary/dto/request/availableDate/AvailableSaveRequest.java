@@ -14,4 +14,5 @@ public class AvailableSaveRequest {
 
     @NotNull(message = "Müsait gün belirtilmelidir!")
     private LocalDate availableDate;
+    private Long doctorId; // doktor id yle kaydet
 }

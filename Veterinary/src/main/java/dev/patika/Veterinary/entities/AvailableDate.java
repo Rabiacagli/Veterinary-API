@@ -1,5 +1,6 @@
 package dev.patika.Veterinary.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,12 +22,13 @@ public class AvailableDate {
     @Column(name = "availableDate_id", columnDefinition = "serial")
     private Long id;
 
-
     @Column(name = "available_date")
     private LocalDate availableDate;
 
-  /*  @ManyToOne(fetch = FetchType.LAZY)
+
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name  = "availableDate_doctor_id" ,referencedColumnName = "doctor_id")
-    private Doctor doctor;*/
+    private Doctor doctor;
 
 }

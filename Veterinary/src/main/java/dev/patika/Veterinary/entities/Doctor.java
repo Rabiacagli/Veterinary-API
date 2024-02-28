@@ -1,5 +1,6 @@
 package dev.patika.Veterinary.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,10 +36,12 @@ public class Doctor {
     @Column(name = "doctor_city")
     private String city;
 
- /*   @OneToMany(mappedBy = "doctor")
+    @JsonManagedReference
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
     private List<Appointment> appointmentList;
 
-    @OneToMany(mappedBy = "doctor")
-    private List<AvailableDate> availableDateList;*/
+    @JsonManagedReference
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
+    private List<AvailableDate> availableDateList;
 
 }

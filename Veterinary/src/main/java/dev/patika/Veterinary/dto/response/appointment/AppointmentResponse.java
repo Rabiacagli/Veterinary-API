@@ -11,4 +11,6 @@ import java.time.LocalDateTime;
 public class AppointmentResponse {
     private Long id;
     private LocalDateTime appointmentDate;
+    private Long animalId;// animal bilgisi görmek için
+    private Long doctorId; // dokr ıd gormek ıcın
 }

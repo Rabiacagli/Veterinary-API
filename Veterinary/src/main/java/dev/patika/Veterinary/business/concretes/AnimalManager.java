@@ -4,18 +4,26 @@ import dev.patika.Veterinary.business.abstracts.IAnimalService;
 import dev.patika.Veterinary.core.exception.NotFoundException;
 import dev.patika.Veterinary.core.utilies.Msg;
 import dev.patika.Veterinary.dao.AnimalRepo;
+import dev.patika.Veterinary.dao.VaccineRepo;
 import dev.patika.Veterinary.entities.Animal;
+import dev.patika.Veterinary.entities.Vaccine;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class AnimalManager implements IAnimalService {
     private final AnimalRepo animalRepo;
+    private final VaccineRepo vaccineRepo;
 
-    public AnimalManager(AnimalRepo animalRepo) {
+
+    public AnimalManager(AnimalRepo animalRepo, VaccineRepo vaccineRepo) {
         this.animalRepo = animalRepo;
+        this.vaccineRepo = vaccineRepo;
     }
 
     @Override
@@ -46,4 +54,12 @@ public class AnimalManager implements IAnimalService {
         this.animalRepo.delete(animal);
         return true;
     }
+
+    @Override
+    public List<Vaccine> filterVaccinesByAnimal(Long animalId) {
+        return this.get(animalId).getVaccineList();
+    }
+
+
+
 }

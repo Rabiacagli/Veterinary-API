@@ -1,5 +1,6 @@
 package dev.patika.Veterinary.api;
 
+import dev.patika.Veterinary.business.abstracts.IAnimalService;
 import dev.patika.Veterinary.business.abstracts.ICustomerService;
 import dev.patika.Veterinary.core.config.modelMapper.IModelMapperService;
 import dev.patika.Veterinary.core.result.Result;
@@ -9,6 +10,7 @@ import dev.patika.Veterinary.dto.request.customer.CustomerSaveRequest;
 import dev.patika.Veterinary.dto.request.customer.CustomerUpdateRequest;
 import dev.patika.Veterinary.dto.response.CursorResponse;
 import dev.patika.Veterinary.dto.response.customer.CustomerResponse;
+import dev.patika.Veterinary.entities.Animal;
 import dev.patika.Veterinary.entities.Customer;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,22 +18,27 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/v1/customers")
 public class CustomerController {
     private final ICustomerService customerService;
     private final IModelMapperService modelMapper;
+    private final IAnimalService animalService;
 
     @Autowired
-    public CustomerController(ICustomerService customerService, IModelMapperService modelMapper) {
+    public CustomerController(ICustomerService customerService, IModelMapperService modelMapper, IAnimalService animalService) {
         this.customerService = customerService;
         this.modelMapper = modelMapper;
+        this.animalService = animalService;
     }
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public ResultData<CustomerResponse> save(@Valid @RequestBody CustomerSaveRequest customerSaveRequest) {
         Customer saveCustomer = this.modelMapper.forRequest().map(customerSaveRequest, Customer.class);
+
         this.customerService.save(saveCustomer);
         return ResultHelper.created(this.modelMapper.forResponse().map(saveCustomer, CustomerResponse.class));
     }
@@ -71,4 +78,12 @@ public class CustomerController {
         this.customerService.delete(id);
         return ResultHelper.ok();
     }
+
+
+    @GetMapping("/{customerId}/animals")  // sahibe ait hayvanları getirir
+    @ResponseStatus(HttpStatus.OK)
+    public ResultData<List<Animal>> filterAnimalsByCustomer(@PathVariable("customerId") Long customerId) {
+        return ResultHelper.success(this.customerService.filterAnimalsByCustomer(customerId));
+    }
+
 }

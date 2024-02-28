@@ -1,5 +1,6 @@
 package dev.patika.Veterinary.dto.request.animal;
 
+import dev.patika.Veterinary.entities.Animal;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,4 +25,9 @@ public class AnimalSaveRequest {
     private String colour;
 
     private LocalDate dateOfBirth;
+
+    private Long customerId; // hayvan sahibi kaydetmek için id tut
+
+
+
 }

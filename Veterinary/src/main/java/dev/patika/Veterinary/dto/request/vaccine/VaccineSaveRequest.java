@@ -16,4 +16,5 @@ public class VaccineSaveRequest {
     private String code;
     private LocalDate protectionStartDate;
     private LocalDate protectionFinishDate;
+    private Long animalId; // hayvan id kaydetmek için
 }

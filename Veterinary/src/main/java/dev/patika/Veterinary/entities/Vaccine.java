@@ -1,5 +1,6 @@
 package dev.patika.Veterinary.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,8 +33,9 @@ public class Vaccine {
     @Column(name = "vac_protection_finish_date")
     private LocalDate protectionFinishDate;
 
- /*   @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name  = "vaccine_animal_id" ,referencedColumnName = "animal_id")
-    private Animal animal;*/
+    private Animal animal;
 
 }

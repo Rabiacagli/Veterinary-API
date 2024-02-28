@@ -1,6 +1,7 @@
 package dev.patika.Veterinary.api;
 
 import dev.patika.Veterinary.business.abstracts.IAvailableDateService;
+import dev.patika.Veterinary.business.abstracts.IDoctorService;
 import dev.patika.Veterinary.core.config.modelMapper.IModelMapperService;
 import dev.patika.Veterinary.core.result.Result;
 import dev.patika.Veterinary.core.result.ResultData;
@@ -10,6 +11,7 @@ import dev.patika.Veterinary.dto.request.availableDate.AvailableUpdateRequest;
 import dev.patika.Veterinary.dto.response.CursorResponse;
 import dev.patika.Veterinary.dto.response.availableDate.AvailableDateResponse;
 import dev.patika.Veterinary.entities.AvailableDate;
+import dev.patika.Veterinary.entities.Doctor;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,17 +23,22 @@ import org.springframework.web.bind.annotation.*;
 public class AvailableDateController {
     private final IAvailableDateService availableDateService;
     private final IModelMapperService modelMapper;
+    private final IDoctorService doctorService;
 
     @Autowired
-    public AvailableDateController(IAvailableDateService availableDateService, IModelMapperService modelMapper) {
+    public AvailableDateController(IAvailableDateService availableDateService, IModelMapperService modelMapper, IDoctorService doctorService) {
         this.availableDateService = availableDateService;
         this.modelMapper = modelMapper;
+        this.doctorService = doctorService;
     }
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public ResultData<AvailableDateResponse> save(@Valid @RequestBody AvailableSaveRequest availableSaveRequest) {
         AvailableDate saveAvailableDate = this.modelMapper.forRequest().map(availableSaveRequest, AvailableDate.class);
+        Doctor doctor = doctorService.get(availableSaveRequest.getDoctorId());
+        saveAvailableDate.setDoctor(doctor);
+        saveAvailableDate.setId(null);
         this.availableDateService.save(saveAvailableDate);
         return ResultHelper.created(this.modelMapper.forResponse().map(saveAvailableDate, AvailableDateResponse.class));
     }

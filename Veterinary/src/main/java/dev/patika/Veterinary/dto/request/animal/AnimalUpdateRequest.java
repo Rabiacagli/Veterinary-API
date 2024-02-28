@@ -26,4 +26,6 @@ public class AnimalUpdateRequest {
     private String colour;
 
     private LocalDate dateOfBirth;
+    private Long customerId;
+
 }

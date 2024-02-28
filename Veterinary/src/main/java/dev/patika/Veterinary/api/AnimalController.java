@@ -1,6 +1,8 @@
 package dev.patika.Veterinary.api;
 
 import dev.patika.Veterinary.business.abstracts.IAnimalService;
+import dev.patika.Veterinary.business.abstracts.ICustomerService;
+import dev.patika.Veterinary.business.abstracts.IVaccineService;
 import dev.patika.Veterinary.core.config.modelMapper.IModelMapperService;
 import dev.patika.Veterinary.core.result.Result;
 import dev.patika.Veterinary.core.result.ResultData;
@@ -10,22 +12,34 @@ import dev.patika.Veterinary.dto.request.animal.AnimalUpdateRequest;
 import dev.patika.Veterinary.dto.response.CursorResponse;
 import dev.patika.Veterinary.dto.response.animal.AnimalResponse;
 import dev.patika.Veterinary.entities.Animal;
+import dev.patika.Veterinary.entities.Customer;
+import dev.patika.Veterinary.entities.Vaccine;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+import java.util.List;
+
+import static dev.patika.Veterinary.core.utilies.Msg.NOT_FOUND;
+
+
 @RestController
 @RequestMapping("/v1/animals")
 public class AnimalController {
     private final IAnimalService animalService;
     private final IModelMapperService modelMapper;
+    private final ICustomerService customerService;
+    private final IVaccineService vaccineService;
 
     @Autowired
-    public AnimalController(IAnimalService animalService, IModelMapperService modelMapper) {
+    public AnimalController(IAnimalService animalService, IModelMapperService modelMapper, ICustomerService customerService, IVaccineService vaccineService) {
         this.animalService = animalService;
         this.modelMapper = modelMapper;
+        this.customerService = customerService;
+        this.vaccineService = vaccineService;
     }
 
 
@@ -33,6 +47,9 @@ public class AnimalController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResultData<AnimalResponse> save(@Valid @RequestBody AnimalSaveRequest animalSaveRequest) {
         Animal saveAnimal = this.modelMapper.forRequest().map(animalSaveRequest, Animal.class);
+        Customer customer = customerService.get(animalSaveRequest.getCustomerId()); //customer için
+        saveAnimal.setCustomer(customer);// customer için
+        saveAnimal.setId(null);
         this.animalService.save(saveAnimal);
         return ResultHelper.created(this.modelMapper.forResponse().map(saveAnimal, AnimalResponse.class));
     }
@@ -40,7 +57,7 @@ public class AnimalController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResultData<AnimalResponse> get(@PathVariable("id") Long id) {
-        return ResultHelper.success(this.modelMapper.forResponse().map(this.animalService.get((long) id), AnimalResponse.class));
+        return ResultHelper.success(this.modelMapper.forResponse().map(this.animalService.get(id), AnimalResponse.class));
     }
 
     @GetMapping()
@@ -73,6 +90,11 @@ public class AnimalController {
         return ResultHelper.ok();
     }
 
+    @GetMapping("/{animalId}/vaccines")  //hayvanın aşılarını getirir
+    @ResponseStatus(HttpStatus.OK)
+    public ResultData<List<Vaccine>> filterVaccinesByAnimal(@PathVariable("animalId") Long animalId) {
+        return ResultHelper.success(this.animalService.filterVaccinesByAnimal(animalId));
+    }
 
 
 }

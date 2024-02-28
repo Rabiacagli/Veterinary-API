@@ -1,5 +1,6 @@
 package dev.patika.Veterinary.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,6 +35,7 @@ public class Customer {
     @Column(name = "customer_city")
     private String city;
 
-  /* @OneToMany(mappedBy = "customer")
-    private List<Animal> animalList;*/
+    @JsonManagedReference
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<Animal> animalList;
 }
