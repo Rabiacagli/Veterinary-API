@@ -5,6 +5,7 @@ import dev.patika.Veterinary.business.abstracts.IVaccineService;
 import dev.patika.Veterinary.core.config.modelMapper.IModelMapperService;
 import dev.patika.Veterinary.core.result.Result;
 import dev.patika.Veterinary.core.result.ResultData;
+import dev.patika.Veterinary.core.utilies.Msg;
 import dev.patika.Veterinary.core.utilies.ResultHelper;
 import dev.patika.Veterinary.dto.request.vaccine.VaccineSaveRequest;
 import dev.patika.Veterinary.dto.request.vaccine.VaccineUpdateRequest;
@@ -17,6 +18,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
+import static java.util.Arrays.stream;
 
 @RestController
 @RequestMapping("/v1/vaccines")
@@ -78,4 +86,14 @@ public class VaccineController {
         this.vaccineService.delete(id);
         return ResultHelper.ok();
     }
+
+    @GetMapping("/protection/{protectionStartDate}/{protectionFinishDate}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResultData<List<Vaccine>> findByProtectionFinishDateBetween(@PathVariable("protectionStartDate") LocalDate protectionStartDate, @PathVariable("protectionFinishDate") LocalDate protectionFinishDate) {
+        return ResultHelper.success(this.vaccineService.findByProtectionFinishDateBetween(protectionStartDate, protectionFinishDate));
+
+    }
+
+
+
 }

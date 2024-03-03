@@ -5,11 +5,13 @@ import dev.patika.Veterinary.core.exception.NotFoundException;
 import dev.patika.Veterinary.core.utilies.Msg;
 import dev.patika.Veterinary.dao.VaccineRepo;
 import dev.patika.Veterinary.entities.Vaccine;
-import dev.patika.Veterinary.entities.Vaccine;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class VaccineManager implements IVaccineService {
@@ -46,6 +48,12 @@ public class VaccineManager implements IVaccineService {
         Vaccine vaccine = this.get(id);
         this.vaccineRepo.delete(vaccine);
         return true;
+    }
+
+    @Override
+    public List<Vaccine> findByProtectionFinishDateBetween(LocalDate protectionStartDate, LocalDate protectionFinishDate) {
+        return this.vaccineRepo.findByProtectionFinishDateBetween(protectionStartDate, protectionFinishDate);
+
     }
 }
 

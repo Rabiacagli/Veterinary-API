@@ -11,6 +11,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 @Service
 public class AvailableDateManager implements IAvailableDateService {
     private final AvailableDateRepo availableDateRepo;
@@ -46,5 +48,10 @@ public class AvailableDateManager implements IAvailableDateService {
         AvailableDate availableDate = this.get(id);
         this.availableDateRepo.delete(availableDate);
         return true;
+    }
+
+    @Override
+    public boolean existsByAvailableDateAndDoctor_Id(LocalDate availableDate, Long doctorId) {
+        return this.availableDateRepo.existsByAvailableDateAndDoctor_Id(availableDate,doctorId);
     }
 }

@@ -1,5 +1,8 @@
 package dev.patika.Veterinary.business.abstracts;
 
+import dev.patika.Veterinary.core.result.ResultData;
+import dev.patika.Veterinary.dto.request.customer.CustomerSaveRequest;
+import dev.patika.Veterinary.dto.response.customer.CustomerResponse;
 import dev.patika.Veterinary.entities.Animal;
 import dev.patika.Veterinary.entities.Customer;
 import org.springframework.data.domain.Page;
@@ -7,7 +10,7 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 public interface ICustomerService {
-    Customer save(Customer customer);
+    CustomerResponse save(CustomerSaveRequest customer);
 
     Customer get(Long id);
 
@@ -18,4 +21,6 @@ public interface ICustomerService {
     boolean delete(Long id);
 
     List<Animal> filterAnimalsByCustomer(Long customerId);
+
+    List<Customer> findByName(String name);
 }

@@ -21,6 +21,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
+
 @RestController
 @RequestMapping("/v1/appointments")
 public class AppointmentController {
@@ -40,16 +45,7 @@ public class AppointmentController {
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public ResultData<AppointmentResponse> save(@Valid @RequestBody AppointmentSaveRequest appointmentSaveRequest) {
-        Appointment saveAppointment = this.modelMapper.forRequest().map(appointmentSaveRequest, Appointment.class);
-        // randevuya hayvan eklendi
-        Animal animal = animalService.get(appointmentSaveRequest.getAnimalId());
-        saveAppointment.setAnimal(animal);
-
-        // randevuya doktor eklendı
-        Doctor doctor = doctorService.get(appointmentSaveRequest.getDoctorId());
-        saveAppointment.setDoctor(doctor);
-        this.appointmentService.save(saveAppointment);
-        return ResultHelper.created(this.modelMapper.forResponse().map(saveAppointment, AppointmentResponse.class));
+        return ResultHelper.created(this.appointmentService.save(appointmentSaveRequest));
     }
 
     @GetMapping("/{id}")
@@ -87,4 +83,31 @@ public class AppointmentController {
         this.appointmentService.delete(id);
         return ResultHelper.ok();
     }
+
+    @GetMapping("/appDateDrId")
+    @ResponseStatus(HttpStatus.OK)
+    public ResultData<List<AppointmentResponse>> filterByDateAndDoctor(
+            @RequestParam(name = "start-date")LocalDate startDate,
+            @RequestParam(name = "finish-date")LocalDate finishDate,
+            @RequestParam(name = "doctor-id")Long doctorId
+
+    ){
+        return ResultHelper.success(this.appointmentService.findByAppointmentDateBetweenAndDoctor_Id(startDate,finishDate,doctorId));
+    }
+
+
+    @GetMapping("/appDateAnimalId")
+    @ResponseStatus(HttpStatus.OK)
+    public ResultData<List<AppointmentResponse>> filterByDateAndAnimal(
+            @RequestParam(name = "start-date")LocalDate startDate,
+            @RequestParam(name = "finish-date")LocalDate finishDate,
+            @RequestParam(name = "animal-id")Long animalId
+
+    ){
+        return ResultHelper.success(this.appointmentService.findByAppointmentDateBetweenAndAnimal_Id(startDate,finishDate,animalId));
+    }
+
+
+
+
 }

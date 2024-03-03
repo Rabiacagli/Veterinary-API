@@ -1,39 +1,58 @@
 package dev.patika.Veterinary.business.concretes;
 
 import dev.patika.Veterinary.business.abstracts.IAnimalService;
+import dev.patika.Veterinary.business.abstracts.ICustomerService;
+import dev.patika.Veterinary.core.config.modelMapper.IModelMapperService;
 import dev.patika.Veterinary.core.exception.NotFoundException;
-import dev.patika.Veterinary.core.utilies.Msg;
+import dev.patika.Veterinary.core.result.ResultData;
+import dev.patika.Veterinary.core.utilies.ResultHelper;
 import dev.patika.Veterinary.dao.AnimalRepo;
 import dev.patika.Veterinary.dao.VaccineRepo;
+import dev.patika.Veterinary.dto.request.animal.AnimalSaveRequest;
+import dev.patika.Veterinary.dto.response.animal.AnimalResponse;
 import dev.patika.Veterinary.entities.Animal;
+import dev.patika.Veterinary.entities.Customer;
 import dev.patika.Veterinary.entities.Vaccine;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import static dev.patika.Veterinary.core.utilies.Msg.NOT_FOUND;
 
 @Service
 public class AnimalManager implements IAnimalService {
     private final AnimalRepo animalRepo;
     private final VaccineRepo vaccineRepo;
 
+    private final IModelMapperService modelMapper;
 
-    public AnimalManager(AnimalRepo animalRepo, VaccineRepo vaccineRepo) {
+    private final ICustomerService customerService;
+
+
+    public AnimalManager(AnimalRepo animalRepo, VaccineRepo vaccineRepo, IModelMapperService modelMapper, ICustomerService customerService) {
         this.animalRepo = animalRepo;
         this.vaccineRepo = vaccineRepo;
+        this.modelMapper = modelMapper;
+        this.customerService = customerService;
     }
 
     @Override
-    public Animal save(Animal animal) {
-        return this.animalRepo.save(animal);
+    public AnimalResponse save(AnimalSaveRequest animalSave) {
+        Animal animal = this.modelMapper.forRequest().map(animalSave,Animal.class);
+        Customer customer = this.customerService.get(animalSave.getCustomerId()); //customer için
+        animal.setCustomer(customer);// customer için
+        this.animalRepo.save(animal);
+        return this.modelMapper.forResponse().map(animal,AnimalResponse.class);
     }
 
     @Override
     public Animal get(Long id) {
-        return this.animalRepo.findById(id).orElseThrow(() -> new NotFoundException(Msg.NOT_FOUND));
+        return this.animalRepo.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND));
     }
 
     @Override
@@ -60,6 +79,12 @@ public class AnimalManager implements IAnimalService {
         return this.get(animalId).getVaccineList();
     }
 
+    @Override
+    public List<Animal> findByName(String name) {
+        return this.animalRepo.findByName(name);
+    }
 
 
 }
+
+

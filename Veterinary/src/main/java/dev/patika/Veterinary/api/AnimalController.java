@@ -6,7 +6,9 @@ import dev.patika.Veterinary.business.abstracts.IVaccineService;
 import dev.patika.Veterinary.core.config.modelMapper.IModelMapperService;
 import dev.patika.Veterinary.core.result.Result;
 import dev.patika.Veterinary.core.result.ResultData;
+import dev.patika.Veterinary.core.utilies.Msg;
 import dev.patika.Veterinary.core.utilies.ResultHelper;
+import dev.patika.Veterinary.dao.AnimalRepo;
 import dev.patika.Veterinary.dto.request.animal.AnimalSaveRequest;
 import dev.patika.Veterinary.dto.request.animal.AnimalUpdateRequest;
 import dev.patika.Veterinary.dto.response.CursorResponse;
@@ -34,24 +36,20 @@ public class AnimalController {
     private final ICustomerService customerService;
     private final IVaccineService vaccineService;
 
+
     @Autowired
     public AnimalController(IAnimalService animalService, IModelMapperService modelMapper, ICustomerService customerService, IVaccineService vaccineService) {
         this.animalService = animalService;
         this.modelMapper = modelMapper;
         this.customerService = customerService;
         this.vaccineService = vaccineService;
-    }
 
+    }
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public ResultData<AnimalResponse> save(@Valid @RequestBody AnimalSaveRequest animalSaveRequest) {
-        Animal saveAnimal = this.modelMapper.forRequest().map(animalSaveRequest, Animal.class);
-        Customer customer = customerService.get(animalSaveRequest.getCustomerId()); //customer için
-        saveAnimal.setCustomer(customer);// customer için
-        saveAnimal.setId(null);
-        this.animalService.save(saveAnimal);
-        return ResultHelper.created(this.modelMapper.forResponse().map(saveAnimal, AnimalResponse.class));
+        return ResultHelper.created(this.animalService.save(animalSaveRequest));
     }
 
     @GetMapping("/{id}")
@@ -95,6 +93,17 @@ public class AnimalController {
     public ResultData<List<Vaccine>> filterVaccinesByAnimal(@PathVariable("animalId") Long animalId) {
         return ResultHelper.success(this.animalService.filterVaccinesByAnimal(animalId));
     }
+
+
+    @GetMapping("/filterByName/{name}")
+    @ResponseStatus(HttpStatus.OK)
+
+    public ResultData<List<Animal>> filterAnimalsByName(@PathVariable("name") String name) {
+        return ResultHelper.success(this.animalService.findByName(name));
+    }
+
+
+
 
 
 }

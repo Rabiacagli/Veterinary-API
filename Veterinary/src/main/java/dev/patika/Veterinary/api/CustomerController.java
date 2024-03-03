@@ -37,10 +37,7 @@ public class CustomerController {
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public ResultData<CustomerResponse> save(@Valid @RequestBody CustomerSaveRequest customerSaveRequest) {
-        Customer saveCustomer = this.modelMapper.forRequest().map(customerSaveRequest, Customer.class);
-
-        this.customerService.save(saveCustomer);
-        return ResultHelper.created(this.modelMapper.forResponse().map(saveCustomer, CustomerResponse.class));
+        return ResultHelper.created(this.customerService.save(customerSaveRequest));
     }
 
     @GetMapping("/{id}")
@@ -85,5 +82,11 @@ public class CustomerController {
     public ResultData<List<Animal>> filterAnimalsByCustomer(@PathVariable("customerId") Long customerId) {
         return ResultHelper.success(this.customerService.filterAnimalsByCustomer(customerId));
     }
+
+    @GetMapping("/findByCustomer/{name}") // isme göre hayvan sahiplerini  getirir
+    @ResponseStatus(HttpStatus.OK)
+    public ResultData<List<Customer>> findByName(@PathVariable("name") String name) {
+        return ResultHelper.success(this.customerService.findByName(name));
+    }    // response
 
 }

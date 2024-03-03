@@ -3,6 +3,8 @@ package dev.patika.Veterinary.dto.response.vaccine;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.nio.channels.FileChannel;
 import java.time.LocalDate;
 
 @Data
@@ -16,4 +18,5 @@ public class VaccineResponse {
     private LocalDate protectionStartDate;
     private LocalDate protectionFinishDate;
     private Long animalId;
+
 }
