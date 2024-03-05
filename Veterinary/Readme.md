@@ -42,7 +42,7 @@
 
 **The UML diagram created at the beginning of the project is as follows:**
 
-![png.forV1.png](..%2Fpng.forV1.png)
+![v1.png](v1.png)
 
 ----
 
