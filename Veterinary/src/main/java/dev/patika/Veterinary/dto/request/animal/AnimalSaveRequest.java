@@ -1,6 +1,4 @@
 package dev.patika.Veterinary.dto.request.animal;
-
-import dev.patika.Veterinary.entities.Animal;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +11,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class AnimalSaveRequest {
 
-    @NotNull(message = "Hayvan ismi boş veya null olamaz")
+    @NotNull(message = "Animal name cannot be empty or null!")
     private String name;
 
     private String species;
@@ -26,8 +24,6 @@ public class AnimalSaveRequest {
 
     private LocalDate dateOfBirth;
 
-    private Long customerId; // hayvan sahibi kaydetmek için id tut
-
-
+    private Long customerId;
 
 }

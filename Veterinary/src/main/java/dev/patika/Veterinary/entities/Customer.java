@@ -11,7 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-
 @Table(name = "customers")
 public class Customer {
 
@@ -36,6 +35,6 @@ public class Customer {
     private String city;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)     // Değerlendirme 9
     private List<Animal> animalList;
 }

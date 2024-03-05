@@ -1,10 +1,6 @@
 package dev.patika.Veterinary.core.result;
-
-import dev.patika.Veterinary.dto.response.vaccine.VaccineResponse;
 import lombok.Getter;
 
-import java.nio.channels.FileChannel;
-import java.util.List;
 
 @Getter
 public class ResultData<T> extends Result{
@@ -14,7 +10,4 @@ public class ResultData<T> extends Result{
         super(status, message, code);
         this.data = data;
    }
-
-
-
 }

@@ -1,5 +1,4 @@
 package dev.patika.Veterinary.core.config.modelMapper;
-
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +18,12 @@ public class ModelManagerService implements IModelMapperService {
     @Override
     public ModelMapper forRequest() {
         this.modelMapper.getConfiguration().setAmbiguityIgnored(true).setMatchingStrategy(MatchingStrategies.STANDARD);
-        return this.modelMapper;  // dışardan gelen request bırbır uyusmak zorunda
+        return this.modelMapper;
     }
 
     @Override
     public ModelMapper forResponse() {
         this.modelMapper.getConfiguration().setAmbiguityIgnored(true).setMatchingStrategy(MatchingStrategies.LOOSE);
-        return this.modelMapper;  // verılerın esneklıgını saglayabılırız
+        return this.modelMapper;
     }
 }

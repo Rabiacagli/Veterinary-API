@@ -1,12 +1,11 @@
 package dev.patika.Veterinary.business.abstracts;
 
 import dev.patika.Veterinary.dto.request.appointment.AppointmentSaveRequest;
+import dev.patika.Veterinary.dto.request.appointment.AppointmentUpdateRequest;
 import dev.patika.Veterinary.dto.response.appointment.AppointmentResponse;
 import dev.patika.Veterinary.entities.Appointment;
 import org.springframework.data.domain.Page;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface IAppointmentService {
@@ -14,17 +13,18 @@ public interface IAppointmentService {
 
     Appointment get(Long id);
 
-    Page<Appointment> cursor(int page, int pageSize);
+    AppointmentResponse getAppointmentResponse(Long id);
 
-    Appointment update(Appointment appointment);
+    Page<AppointmentResponse> cursor(int page, int pageSize);
+
+    AppointmentResponse update(AppointmentUpdateRequest appointment);
 
     boolean delete(Long id);
 
-    List<AppointmentResponse> findByAppointmentDateBetweenAndDoctor_Id(LocalDate startDate,LocalDate finishDate,Long doctorId);
+    List<AppointmentResponse> findByAppointmentDateBetweenAndDoctor_Id(
+            LocalDate startDate,LocalDate finishDate,Long doctorId);
 
-    List <AppointmentResponse>  findByAppointmentDateBetweenAndAnimal_Id(LocalDate startDate, LocalDate finishDate, Long animalId);
-
-    boolean existByAppointmentDate(LocalDateTime appointmentDate);
-
+    List <AppointmentResponse>  findByAppointmentDateBetweenAndAnimal_Id(
+            LocalDate startDate, LocalDate finishDate, Long animalId);
 
 }

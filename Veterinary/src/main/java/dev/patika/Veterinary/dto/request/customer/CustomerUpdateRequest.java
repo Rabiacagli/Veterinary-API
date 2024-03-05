@@ -9,12 +9,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CustomerUpdateRequest {
-    @NotNull(message = "ID no boş veya null olamaz")
+    @NotNull(message = "ID no cannot be empty or null")
     private Long id;
-    @NotNull(message = "Misafir adı boş veya null olamaz")
+
+    @NotNull(message = "Appointment date cannot be empty or null")
     private String name;
+
     private String phone;
+
     private String mail;
+
     private String address;
+
     private String city;
 }

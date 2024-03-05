@@ -2,7 +2,6 @@ package dev.patika.Veterinary.core.result;
 
 import lombok.Getter;
 
-// kullanıcıyı yonlendırme
 @Getter
 public class Result {
     private boolean status;

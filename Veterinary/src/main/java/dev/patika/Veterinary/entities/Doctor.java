@@ -37,11 +37,11 @@ public class Doctor {
     private String city;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)         // Değerlendirme 9
     private List<Appointment> appointmentList;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)        // Değerlendirme 9
     private List<AvailableDate> availableDateList;
 
 }

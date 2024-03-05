@@ -1,9 +1,6 @@
 package dev.patika.Veterinary.core.utilies;
-
 import dev.patika.Veterinary.core.result.Result;
 import dev.patika.Veterinary.core.result.ResultData;
-import dev.patika.Veterinary.core.result.ResultData;
-import dev.patika.Veterinary.dto.response.CursorResponse;
 import dev.patika.Veterinary.dto.response.CursorResponse;
 import org.springframework.data.domain.Page;
 
@@ -28,6 +25,10 @@ public class ResultHelper {
         return new Result(false, msg, "404");
     }
 
+    public static Result conflictError(String msg) {
+        return new Result(false, msg, "409");
+    }
+
     public static <T> ResultData<CursorResponse<T>> cursor (Page<T> pageData){
         CursorResponse<T> cursor = new CursorResponse<>();
         cursor.setItems(pageData.getContent());
@@ -36,5 +37,4 @@ public class ResultHelper {
         cursor.setTotalElements(pageData.getTotalElements());
         return ResultHelper.success(cursor);
     }
-
 }

@@ -11,10 +11,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DoctorSaveRequest {
 
-    @NotNull(message = "Doktor adı boş veya null olamaz")
+    @NotNull(message = "Doctor name cannot be empty or null")
     private String name;
+
     private String phone;
+
     private String mail;
+
     private String address;
+
     private String city;
 }

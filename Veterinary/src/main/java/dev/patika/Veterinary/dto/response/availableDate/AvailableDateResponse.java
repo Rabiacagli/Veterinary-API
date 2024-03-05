@@ -11,6 +11,8 @@ import java.time.LocalDate;
 
 public class AvailableDateResponse {
     private Long id;
+
     private LocalDate availableDate;
-    private Long doctorId; // doktor id yle bırlıkte goster
+
+    private Long doctorId;
 }

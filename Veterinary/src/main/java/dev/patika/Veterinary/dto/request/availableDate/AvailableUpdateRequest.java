@@ -11,8 +11,10 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AvailableUpdateRequest {
-    @NotNull(message = "ID no boş veya null olamaz.")
+    @NotNull(message = "ID number cannot be empty or null!")
     private Long id;
+
     private LocalDate availableDate;
-    private Long doctorId;// doktor id yle update yap
+
+    private Long doctorId;
 }

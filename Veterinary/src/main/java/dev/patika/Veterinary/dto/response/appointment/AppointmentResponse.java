@@ -10,7 +10,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class AppointmentResponse {
     private Long id;
+
     private LocalDateTime appointmentDate;
-    private Long animalId;// animal bilgisi görmek için
-    private Long doctorId; // dokr ıd gormek ıcın
+
+    private Long animalId;
+
+    private Long doctorId;
 }

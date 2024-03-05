@@ -12,9 +12,9 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class AnimalUpdateRequest {
 
-    @Positive(message = "ID değeri pozitif sayı olmak zorunda")
+    @Positive(message = "ID value must be a positive number!")
     private Long id;
-    @NotNull(message = "Hayvan ismi boş veya null olamaz")
+    @NotNull(message = "Animal name cannot be empty or null!")
     private String name;
 
     private String species;
@@ -26,6 +26,7 @@ public class AnimalUpdateRequest {
     private String colour;
 
     private LocalDate dateOfBirth;
+
     private Long customerId;
 
 }

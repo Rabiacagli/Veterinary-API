@@ -1,13 +1,11 @@
 package dev.patika.Veterinary.business.abstracts;
-
-import dev.patika.Veterinary.core.result.ResultData;
 import dev.patika.Veterinary.dto.request.animal.AnimalSaveRequest;
+import dev.patika.Veterinary.dto.request.animal.AnimalUpdateRequest;
 import dev.patika.Veterinary.dto.response.animal.AnimalResponse;
+import dev.patika.Veterinary.dto.response.vaccine.VaccineResponse;
 import dev.patika.Veterinary.entities.Animal;
-import dev.patika.Veterinary.entities.Vaccine;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.RequestParam;
-
+import java.time.LocalDate;
 import java.util.List;
 
 public interface IAnimalService {
@@ -16,23 +14,18 @@ public interface IAnimalService {
 
     Animal get(Long id);
 
-    Page<Animal> cursor(int page, int pageSize);
+    AnimalResponse getAnimalResponse(Long id);
 
-    Animal update(Animal animal);
+    Page<AnimalResponse> cursor(int page, int pageSize);
+
+    AnimalResponse update(AnimalUpdateRequest animal);
 
     boolean delete(Long id);
 
+    List<VaccineResponse> filterVaccinesByAnimal(Long animalId);
 
-    List<Vaccine> filterVaccinesByAnimal(Long animalId); // hayvanın aşılarını getirir
+    List<AnimalResponse> findByName (String name);
 
-
-    List<Animal> findByName (String name);
-
-
-
-
-
-
-
-
+    boolean existsByNameAndCustomer_IdAndSpeciesAndBreedAndDateOfBirth(
+            String name, Long customerId, String species, String breed, LocalDate dateOfBirth);
 }

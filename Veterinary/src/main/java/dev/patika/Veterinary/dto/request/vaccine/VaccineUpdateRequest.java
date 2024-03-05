@@ -12,11 +12,17 @@ import java.time.LocalDate;
 @NoArgsConstructor
 
 public class VaccineUpdateRequest {
-    @NotNull(message = "ID no boş veya null olamaz.")
+    @NotNull(message = "ID no cannot be empty or null")
     private Long id;
+
     private String name;
+
     private String code;
+
     private LocalDate protectionStartDate;
+
     private LocalDate protectionFinishDate;
-    private Long animalId; // hayvan id kaydetmek için
+
+    private Long animalId;
 }
+

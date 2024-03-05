@@ -12,10 +12,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-
 @Table(name = "availableDates")
 public class AvailableDate {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,10 +23,8 @@ public class AvailableDate {
     @Column(name = "available_date")
     private LocalDate availableDate;
 
-
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)                  // Değerlendirme 9
     @JoinColumn(name  = "availableDate_doctor_id" ,referencedColumnName = "doctor_id")
     private Doctor doctor;
-
 }

@@ -1,12 +1,10 @@
 package dev.patika.Veterinary.business.abstracts;
-
-import dev.patika.Veterinary.core.result.ResultData;
 import dev.patika.Veterinary.dto.request.customer.CustomerSaveRequest;
+import dev.patika.Veterinary.dto.request.customer.CustomerUpdateRequest;
+import dev.patika.Veterinary.dto.response.animal.AnimalResponse;
 import dev.patika.Veterinary.dto.response.customer.CustomerResponse;
-import dev.patika.Veterinary.entities.Animal;
 import dev.patika.Veterinary.entities.Customer;
 import org.springframework.data.domain.Page;
-
 import java.util.List;
 
 public interface ICustomerService {
@@ -14,13 +12,22 @@ public interface ICustomerService {
 
     Customer get(Long id);
 
-    Page<Customer> cursor(int page, int pageSize);
+    CustomerResponse getCustomerResponse(Long id);
 
-    Customer update(Customer customer);
+    Page<CustomerResponse> cursor(int page, int pageSize);
+
+    CustomerResponse update(CustomerUpdateRequest customer);
 
     boolean delete(Long id);
 
-    List<Animal> filterAnimalsByCustomer(Long customerId);
+    List<AnimalResponse> filterAnimalsByCustomer(Long customerId);
 
-    List<Customer> findByName(String name);
+    List<CustomerResponse> findByName(String name);
+
+    Boolean existsByNameAndPhoneAndMailAndAddressAndCity
+            (String name,
+             String phone,
+             String mail,
+             String address,
+             String city);
 }

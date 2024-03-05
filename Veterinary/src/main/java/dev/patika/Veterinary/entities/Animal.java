@@ -1,12 +1,10 @@
 package dev.patika.Veterinary.entities;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -14,7 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-
 @Table(name = "animals")
 public class Animal {
 
@@ -42,18 +39,16 @@ public class Animal {
     private LocalDate dateOfBirth;
 
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)                            // Değerlendirme 9
     @JoinColumn(name  = "animal_customer_id" ,referencedColumnName = "customer_id")
     private Customer customer;
 
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL)    // Değerlendirme 9
     private List<Vaccine> vaccineList;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "animal",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "animal",cascade = CascadeType.ALL)     // Değerlendirme 9
     private List<Appointment> appointmentList;
-
-
 }
